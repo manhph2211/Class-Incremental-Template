@@ -2,7 +2,6 @@
 data/*/train/*/*/*.jpg
 data/*/public_test/*.jpg
 checkpoints/*.pth
-outputs/*.jpg
 outputs/*.zip
 
 # Byte-compiled / optimized / DLL files
