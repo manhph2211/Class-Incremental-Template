@@ -3,7 +3,7 @@ Class-Incremental
 
 # Introduction
 
-This project aims to handle the image classification using Class-Incremental Method :smile: 
+This project aims to handle the image classification using Class-Incremental Method, FastSAM, and CLIP model :smile: 
 
 # Dataset
 
