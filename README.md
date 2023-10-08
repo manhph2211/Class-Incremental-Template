@@ -50,8 +50,9 @@ pip install -r requirements.txt
 # Usage
 
 ```
-python src/tools/segment_bird.py --output "" --image_folder "" # optional
+python src/tools/segment.py --output "" --image_folder "" # optional
 python src/tools/train.py 
-python src/tools/classify_bird.py
+python src/tools/classify.py
 ```
+
 
