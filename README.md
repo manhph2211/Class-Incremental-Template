@@ -50,14 +50,14 @@ pip install -r requirements.txt
 # Usage
 
 ```
-# optional and make sure download checkpoint https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view
-# put this file into folder `src/models/segmentator/weights`
++ Optional and make sure download checkpoint https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view
++ Put this file into folder `src/models/segmentator/weights`
 python src/tools/segment.py --output " " --image_folder " " --text_prompt "eg. a bird"
 
-# training and validation 
++ Training and validation 
 python src/tools/train.py
 
-# testing an image folder and submission
++ Testing an image folder and submission
 python src/tools/classify.py
 ```
 
