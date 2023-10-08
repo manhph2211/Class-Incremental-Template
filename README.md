@@ -45,20 +45,18 @@ cd Class-Incremental
 conda create -n ci python=3.11
 conda activate ci
 pip install -r requirements.txt
+gdown --fuzzy https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view -O src/models/segmentator/weights
 ```
 
 # Usage
 
-```
-+ Optional and make sure download checkpoint https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view
-+ Put this file into folder `src/models/segmentator/weights`
-python src/tools/segment.py --output " " --image_folder " " --text_prompt "eg. a bird"
+``` 
+python src/tools/segment.py --output " " --image_folder " " --text_prompt "eg. a bird" # Optional
+ 
+python src/tools/train.py # Training and validation
 
-+ Training and validation 
-python src/tools/train.py
+python src/tools/classify.py # Testing an image folder and submission
 
-+ Testing an image folder and submission
-python src/tools/classify.py
 ```
 
 # Reference
