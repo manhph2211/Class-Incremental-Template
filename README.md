@@ -40,6 +40,8 @@ Before going to the project experiment, we need to make sure that the data struc
 # Set-up
 
 ```
+git clone https://github.com/manhph2211/Class-Incremental.git
+cd Class-Incremental
 conda create -n ci python=3.11
 conda activate ci
 pip install -r requirements.txt
