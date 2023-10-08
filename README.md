@@ -16,19 +16,23 @@ Before going to the project experiment, we need to make sure that the data struc
     ```
     .
     ├── data
+    
     │   ├── raw
     │   │   ├── train
     │   │   │   ├── phase 1
     │   │   │   │   ├── class_0
+    │   │   │   │   │   ├── 000.jpg
+    │   │   │   │   │   ├── ...
     │   │   │   │   ├── class_1
     │   │   │   │   ├── ...
     │   │   │   │   ├── class_10
-
     │   │   │   ├── phase 2
     │   │   │   ├── ...
     │   │   │   ├── phase 10
-   
     │   │   ├── public_test
+    │   │   │   ├── 00.jpg
+    │   │   │   ├── ...
+    
     │   ├── processed
     │   │   ├── train
     │   │   ├── public_test
