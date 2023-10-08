@@ -50,9 +50,27 @@ pip install -r requirements.txt
 # Usage
 
 ```
-python src/tools/segment.py --output "" --image_folder "" # optional
-python src/tools/train.py 
+# optional and make sure download checkpoint https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view
+# put this file into folder `src/models/segmentator/weights`
+python src/tools/segment.py --output " " --image_folder " " --text_prompt "eg. a bird"
+
+# training and validation 
+python src/tools/train.py
+
+# testing an image folder and submission
 python src/tools/classify.py
 ```
 
+# Reference
+
+```
+@misc{zhao2023fast,
+      title={Fast Segment Anything},
+      author={Xu Zhao and Wenchao Ding and Yongqi An and Yinglong Du and Tao Yu and Min Li and Ming Tang and Jinqiao Wang},
+      year={2023},
+      eprint={2306.12156},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
 
