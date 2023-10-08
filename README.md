@@ -9,6 +9,30 @@ In this project, we will aim to handle the image classification using Class-Incr
 
 Now we have 2 sets: train and val (public_test) corresponding to 2 folders in `data`. There are 10 phases and each phases we will have 10 different classes so in total we have 100 classes.
 
+Before going to the project experiment, we need to make sure that the data structure follow the below format!
+
+## Structure
+    
+    ```
+    .
+    ├── data
+    │   ├── raw
+    │   │   ├── train
+    │   │   │   ├── phase 1
+    │   │   │   │   ├── class_0
+    │   │   │   │   ├── class_1
+    │   │   │   │   ├── ...
+    │   │   │   │   ├── class_10
+
+    │   │   │   ├── phase 2
+    │   │   │   ├── ...
+    │   │   │   ├── phase 10
+   
+    │   │   ├── public_test
+    │   ├── processed
+    │   │   ├── train
+    │   │   ├── public_test
+    ```
 # Set-up
 
 ```
@@ -22,6 +46,6 @@ pip install -r requirements.txt
 ```
 python src/tools/segment_bird.py --output "" --image_folder "" # optional
 python src/tools/train.py 
-python src/tools/inference.py
+python src/tools/classify_bird.py
 ```
 
