@@ -3,7 +3,7 @@ Class-Incremental
 
 # Introduction
 
-In this project, we will aim to handle the image classification using Class-Incremental Method :smile: Hope that we can do the best!
+This project aims to handle the image classification using Class-Incremental Method :smile: 
 
 # Dataset
 
