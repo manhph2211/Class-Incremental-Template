@@ -7,7 +7,7 @@ This project aims to handle the image classification using Class-Incremental Met
 
 # Dataset
 
-Now we have 2 sets: train and val (public_test) corresponding to 2 folders in `data`. There are 10 phases and each phases we will have 10 different classes so in total we have 100 classes.
+Now suppose that we have 2 sets in raw: train and val (public_test) corresponding to 2 folders in `data/raw`. There are 10 phases and each phases we will have 10 different classes so in total we have 100 classes.
 
 Before going to the project experiment, we need to make sure that the data structure follow the below format!
 
