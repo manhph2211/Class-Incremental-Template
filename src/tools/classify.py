@@ -9,6 +9,7 @@ import sys
 sys.path.append(".")
 from src.dataloader.dataset import CustomTestDataset
 from src.models.classifier.baseline import Baseline
+from src.models.classifier.pretrained_clip import CLIPClassifier
 
 
 class Inference:
@@ -26,7 +27,7 @@ class Inference:
     def load_models(self):
         models = []
         for phase in range(1, 11):
-            model = Baseline(pretrained_checkpoint=None, num_classes=10*phase, device=self.device)
+            model = CLIPClassifier(pretrained_checkpoint=None, num_classes=10*phase, device=self.device)
             model_path = f"checkpoints/phase_{phase}_model.pth"  
             model.load_state_dict(torch.load(model_path, map_location=self.device))
             model.eval()

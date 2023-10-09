@@ -3,9 +3,9 @@ import torch
 import clip
 
 
-class Baseline(nn.Module):
+class CLIPClassifier(nn.Module):
     def __init__(self, pretrained_checkpoint=None, num_classes=10, device='cuda'):
-        super(Baseline, self).__init__()
+        super(CLIPClassifier, self).__init__()
         self.extractor, _ = clip.load("ViT-B/32", device='cpu')
         self.extractor = self.extractor.to(device)
         try:
