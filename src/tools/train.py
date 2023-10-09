@@ -19,7 +19,7 @@ class Trainer:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
-            RandAugment(n=3, m=5),
+            # RandAugment(n=3, m=5),
             transforms.RandomVerticalFlip(),  
             transforms.RandomHorizontalFlip(),  
             transforms.RandomRotation(30),
