@@ -18,7 +18,7 @@ Before going to the project experiment, we need to make sure that the data struc
     ├── data
     
     │   ├── raw
-    │   │   ├── train
+    │   │   ├── Train
     │   │   │   ├── phase 1
     │   │   │   │   ├── class_0
     │   │   │   │   │   ├── 000.jpg
@@ -29,13 +29,13 @@ Before going to the project experiment, we need to make sure that the data struc
     │   │   │   ├── phase 2
     │   │   │   ├── ...
     │   │   │   ├── phase 10
-    │   │   ├── public_test
+    │   │   ├── Val
     │   │   │   ├── 00.jpg
     │   │   │   ├── ...
     
     │   ├── processed
-    │   │   ├── train
-    │   │   ├── public_test
+    │   │   ├── Train
+    │   │   ├── Val
     ```
 # Set-up
 

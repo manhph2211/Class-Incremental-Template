@@ -9,86 +9,13 @@ from collections import defaultdict
 from PIL import Image
 from torch.utils.data import Dataset
 import numpy as np
+import sys
+sys.path.append(".")
+from src.dataloader.custom_incremental import CustomTestDataset, CustomTrainDataset, ImageFolder
 
-
-class ImageFolder(Dataset):
-    def __init__(self, root, transform=None):
-        self.root = root
-        self.transform = transform
-        self.classes, self.class_to_idx = self._find_classes()
-        self.samples = self._make_dataset()
-
-    def _find_classes(self):
-        classes = [d.name for d in os.scandir(self.root) if d.is_dir()]
-        classes.sort()
-        class_to_idx = {cls: int(cls) for i, cls in enumerate(classes)}
-        return classes, class_to_idx
-
-    def _make_dataset(self):
-        samples = []
-        for target_class in self.classes:
-            class_dir = os.path.join(self.root, target_class)
-            if not os.path.isdir(class_dir):
-                continue
-
-            for root, _, fnames in sorted(os.walk(class_dir)):
-                for fname in sorted(fnames):
-                    path = os.path.join(root, fname)
-                    item = (path, self.class_to_idx[target_class])
-                    samples.append(item)
-        return samples
-
-    def __len__(self):
-        return len(self.samples)
-
-    def __getitem__(self, index):
-        path, target = self.samples[index]
-        image = Image.open(path).convert('RGB')
-
-        if self.transform is not None:
-            image = self.transform(image)
-
-        return image, target
-    
-
-class CustomTrainDataset(Dataset):
-    def __init__(self, original_dataset, additional_samples=None):
-        self.original_dataset = original_dataset
-        self.additional_samples = additional_samples if additional_samples else []
-    
-    def __len__(self):
-        return len(self.original_dataset) + len(self.additional_samples)
-
-    def __getitem__(self, index):
-        if index < len(self.original_dataset):
-            return self.original_dataset[index]
-        else:
-            additional_index = index - len(self.original_dataset)
-            return self.additional_samples[additional_index]
-
-
-class CustomTestDataset(Dataset):
-    def __init__(self, path_to_folder='data/raw/val', transform=None):
-        self.path_to_folder = path_to_folder
-        self.transform = transform
-        self.image_names = os.listdir(path_to_folder)
-
-    def __len__(self):
-        return len(self.image_names)
-
-    def __getitem__(self, idx):
-        image_name = self.image_names[idx]
-        image_path = os.path.join(self.path_to_folder, image_name)
-        image = Image.open(image_path).convert('RGB') 
-
-        if self.transform:
-            image = self.transform(image)
-
-        return image, image_name
-        
 
 class DataHandler:
-    def __init__(self, root='data/raw/train', ratio=0.2, transform=None):
+    def __init__(self, root='data/raw/Train', ratio=0.2, transform=None):
         self.root = root
         self.transform = transform
         self.ratio = ratio
@@ -124,31 +51,27 @@ class DataHandler:
 
             train_dataset = CustomTrainDataset(train_dataset, additional_samples)
         return train_dataset, test_dataset
-    
 
-def visualize_images_per_label(phase, transform, num_images_per_label):
-    datahandler = DataHandler(transform=transform)
-    dataset, _ = datahandler.update_one_phase_dateset(phase)
-    print(len(dataset))
+    def visualize_images_per_label(self, phase, num_images_per_label=5):
+        dataset, _ = self.update_one_phase_dateset(phase)
+        unique_labels = list(range(phase*10))
+        images_per_label = {label: [] for label in unique_labels}
 
-    unique_labels = list(range(phase*10))
-    images_per_label = {label: [] for label in unique_labels}
+        for index in range(len(dataset)):
+            image, label = dataset[index]
+            if len(images_per_label[label]) < num_images_per_label:
+                images_per_label[label].append(image)
 
-    for index in range(len(dataset)):
-        image, label = dataset[index]
-        if len(images_per_label[label]) < num_images_per_label:
-            images_per_label[label].append(image)
+        for label, images in images_per_label.items():
+            plt.figure(figsize=(12, 2))
+            for i, image in enumerate(images):
+                plt.subplot(1, num_images_per_label, i + 1)
+                plt.imshow(np.transpose(image.numpy(), (1, 2, 0)))  
+                plt.title(f"Label: {label}")
+                plt.axis('off')
+            plt.tight_layout()
+        plt.show()
 
-    for label, images in images_per_label.items():
-        plt.figure(figsize=(12, 2))
-        for i, image in enumerate(images):
-            plt.subplot(1, num_images_per_label, i + 1)
-            plt.imshow(np.transpose(image.numpy(), (1, 2, 0)))  
-            plt.title(f"Label: {label}")
-            plt.axis('off')
-        plt.tight_layout()
-    plt.show()
-    
 
 def get_loader(phase, transform):
     datahandler = DataHandler(transform=transform)
@@ -176,4 +99,6 @@ if __name__ == "__main__":
         transforms.ToTensor(),
         # transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
-    visualize_images_per_label(phase=2, transform=transform,num_images_per_label=5)
+    handler = DataHandler(transform = transform)
+    handler.visualize_images_per_label(phase=2)
+    

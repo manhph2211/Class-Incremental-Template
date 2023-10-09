@@ -1,9 +1,10 @@
 # Custom 
-data/*/train/*/*/*.jpg
-data/*/public_test/*.jpg
+data/*/Train/*/*/*.jpg
+data/*/Val/*.jpg
+data/*/*.zip
 checkpoints/*.pth
 outputs/*.zip
-
+*.sh
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

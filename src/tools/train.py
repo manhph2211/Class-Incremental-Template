@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 import sys
 sys.path.append(".")
 from src.dataloader.dataset import get_loader
-from src.dataloader.rand_augment import RandAugment
+from src.utils.rand_augment import RandAugment
 from src.models.classifier.baseline import Baseline
 from src.utils.losses import LabelSmoothingCrossEntropy
 import torchvision.transforms as transforms

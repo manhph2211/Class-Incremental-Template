@@ -66,5 +66,5 @@ class Inference:
 
 
 if __name__ == "__main__":
-    inference = Inference(path_to_folder="data/raw/public_test")
+    inference = Inference(path_to_folder="data/raw/Val")
     inference.submit()
