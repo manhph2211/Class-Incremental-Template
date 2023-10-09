@@ -21,7 +21,7 @@ def parse_args():
         "--text_prompt", type=str, default='bird', help='use text prompt eg: "a bird"'
     )
     parser.add_argument(
-        "--conf", type=float, default=0.4, help="object confidence threshold"
+        "--conf", type=float, default=0.6, help="object confidence threshold"
     )
     parser.add_argument(
         "--randomcolor", type=bool, default=True, help="mask random color"
