@@ -51,6 +51,8 @@ gdown --fuzzy https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/
 # Usage
 
 ``` 
+python src/dataloader/dataset.py # you might wanna see some samples
+
 python src/tools/segment.py --output " " --image_folder " " --text_prompt "eg. a bird" # Optional
  
 python src/tools/train.py # Training and validation
