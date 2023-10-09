@@ -30,13 +30,9 @@ class Trainer:
         self.models = {}
 
     def train_one_phase(self, phase, max_epochs, lr=0.0001):
-        best_val_accuracy = 0.0
+        best_train_accuracy, best_val_accuracy = 0.0, 0.0
         best_loss = np.inf
-        if phase > 1:
-          ckpt = phase - 1
-        else:
-          ckpt = phase
-        model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{ckpt}_model.pth", num_classes=phase*10, device=self.device)
+        model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
         criterion = LabelSmoothingCrossEntropy()
         optimizer = optim.Adam(model.parameters(), lr=lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=3, verbose=True)
@@ -61,6 +57,8 @@ class Trainer:
                 train_labels.extend(labels.cpu().numpy())
 
             train_accuracy = accuracy_score(train_labels, train_predictions)
+            if train_accuracy > best_train_accuracy:
+                best_train_accuracy = train_accuracy
 
             val_predictions, val_labels = [], []
 
@@ -74,6 +72,9 @@ class Trainer:
                     val_labels.extend(labels.cpu().numpy())
 
             val_accuracy = accuracy_score(val_labels, val_predictions)
+            if val_accuracy > best_val_accuracy:
+                best_val_accuracy = val_accuracy
+
             scheduler.step(val_running_loss)
 
             print(f"Phase {phase} - Epoch [{epoch + 1}/{max_epochs}] - Val Loss: {val_running_loss:.4f} - Train Acc: {train_accuracy:.4f} - Val Acc: {val_accuracy:.4f}")
@@ -84,13 +85,13 @@ class Trainer:
 
         self.models[phase] = model
 
-        return train_accuracy, val_accuracy
+        return best_train_accuracy, best_val_accuracy
     
     def train(self):
         for phase in range(1,11):
             print(f"************** Start traning phase {phase} **************")
             train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=100)
-            print(f"************** Phase {phase} - Train Acc: {train_accuracy:.4f} - Val Acc: {val_accuracy:.4f} **************")
+            print(f"************** Phase {phase} - Best Train Acc: {train_accuracy:.4f} - Best Val Acc: {val_accuracy:.4f} **************")
 
 
 if __name__ == "__main__":
