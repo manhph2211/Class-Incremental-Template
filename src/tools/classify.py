@@ -27,7 +27,7 @@ class Inference:
     def load_models(self):
         models = []
         for phase in range(1, 11):
-            model = CLIPClassifier(pretrained_checkpoint=None, num_classes=10*phase, device=self.device)
+            model = Baseline(pretrained_checkpoint=None, num_classes=10*phase, device=self.device)
             model_path = f"checkpoints/phase_{phase}_model.pth"  
             model.load_state_dict(torch.load(model_path, map_location=self.device))
             model.eval()

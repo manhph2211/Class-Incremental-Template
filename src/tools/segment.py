@@ -10,7 +10,7 @@ def parse_args():
     parser.add_argument(
         "--model_path", type=str, default="src/models/segmentator/weights/FastSAM.pt", help="model"
     )
-    parser.add_argument("--imgsz", type=int, default=512, help="image size")
+    parser.add_argument("--imgsz", type=int, default=256, help="image size")
     parser.add_argument(
         "--iou",
         type=float,
@@ -18,7 +18,7 @@ def parse_args():
         help="iou threshold for filtering the annotations",
     )
     parser.add_argument(
-        "--text_prompt", type=str, default='a bird', help='use text prompt eg: "a bird"'
+        "--text_prompt", type=str, default='bird', help='use text prompt eg: "a bird"'
     )
     parser.add_argument(
         "--conf", type=float, default=0.4, help="object confidence threshold"
@@ -45,8 +45,6 @@ def parse_args():
     device = torch.device(
         "cuda"
         if torch.cuda.is_available()
-        else "mps"
-        if torch.backends.mps.is_available()
         else "cpu"
     )
     parser.add_argument(
@@ -62,10 +60,10 @@ def parse_args():
         "--withContours", type=bool, default=False, help="draw the edges of the masks"
     )
     parser.add_argument(
-        "--img_folder", type=str, default="outputs", help="if you want to segment all jpg (others) images in a folder!"
+        "--img_folder", type=str, default="data/raw/Train/*/*", help="if you want to segment all jpg (others) images in a folder!"
     )
     parser.add_argument(
-        "--output", type=str, default="outputs", help="image save path"
+        "--output", type=str, default="None", help="image save path"
     )
 
     return parser.parse_args()

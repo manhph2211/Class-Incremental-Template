@@ -45,7 +45,7 @@ cd Class-Incremental
 conda create -n ci python=3.11
 conda activate ci
 pip install -r requirements.txt
-gdown --fuzzy https://drive.google.com/file/d/1m1sjY4ihXBU1fZXdQ-Xdj-mDltW-2Rqv/view -O src/models/segmentator/weights
+wget https://huggingface.co/spaces/An-619/FastSAM/resolve/main/weights/FastSAM.pt -O src/models/segmentator/weights/FastSAM.pt
 ```
 
 # Usage

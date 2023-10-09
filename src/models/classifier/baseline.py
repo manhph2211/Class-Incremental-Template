@@ -8,6 +8,7 @@ class Baseline(nn.Module):
     def __init__(self, pretrained_checkpoint=None, num_classes=10, device='cuda'):
         super(Baseline, self).__init__()
         self.extractor = EfficientNet.from_pretrained('efficientnet-b0').to(device)
+        self.extractor._fc = nn.Identity()
 
         try:
           checkpoint = torch.load(pretrained_checkpoint, map_location=device)
@@ -17,7 +18,10 @@ class Baseline(nn.Module):
           pass
         self.base = nn.Sequential(
             nn.Dropout(0.2),
-            nn.Linear(1000, num_classes),
+            nn.Linear(1280, 512),
+            MemoryEfficientSwish(),
+            nn.Dropout(0.2),
+            nn.Linear(512, num_classes),
             MemoryEfficientSwish()
         ).to(device)
 

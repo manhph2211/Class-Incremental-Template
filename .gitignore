@@ -5,6 +5,7 @@ data/*/*.zip
 checkpoints/*.pth
 outputs/*.zip
 *.sh
+*.out
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

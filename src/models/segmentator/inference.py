@@ -17,8 +17,8 @@ def main(args):
     args.point_label = ast.literal_eval(args.point_label)
     for img_path in tqdm(glob.glob(os.path.join(args.img_folder,"*.jpg"))):
         image_name = img_path.split("/")[-1]
-        image_dir = "/".join(img_path.split("/")[:-2]) 
-        output_dir = os.path.join(image_dir,args.output)
+        image_dir = "/".join(img_path.split("/")[:-1]) 
+        output_dir = image_dir.replace("raw",'processed')
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)     
 

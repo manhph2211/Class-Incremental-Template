@@ -33,7 +33,7 @@ class Trainer:
     def train_one_phase(self, phase, max_epochs, lr=0.0001):
         best_train_accuracy, best_val_accuracy = 0.0, 0.0
         best_loss = np.inf
-        model = CLIPClassifier(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
+        model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
         criterion = LabelSmoothingCrossEntropy()
         optimizer = optim.Adam(model.parameters(), lr=lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=3, verbose=True)

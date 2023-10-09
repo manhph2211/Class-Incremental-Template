@@ -106,7 +106,6 @@ class FastSAMPrompt:
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         if len(annotations) == 0:
-            print("Something Wrong")
             return  cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         
         if isinstance(annotations[0], dict):
@@ -125,7 +124,7 @@ class FastSAMPrompt:
                     return False
             return True
         
-        if np.sum(annotations.squeeze() / annotations.shape[1] / annotations.shape[2]) > 0.1 and is_object_inside_border(annotations.squeeze()): 
+        if is_object_inside_border(annotations.squeeze()): 
             result = cv2.cvtColor(image, cv2.COLOR_RGB2BGR) * np.expand_dims(annotations.squeeze(), axis=-1)
         else:
             result =  cv2.cvtColor(image, cv2.COLOR_RGB2BGR) 
