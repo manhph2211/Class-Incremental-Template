@@ -43,6 +43,10 @@ class DataHandler:
                 previous_train_dataset, previous_test_dataset = self.get_one_phase_dataset(previous_phase)
                 test_dataset = ConcatDataset([test_dataset, previous_test_dataset])
                 track = defaultdict(int)
+                random.seed(42)  
+                shuffled_indices = list(range(len(previous_train_dataset)))
+                random.shuffle(shuffled_indices)
+                previous_train_dataset = torch.utils.data.Subset(previous_train_dataset, shuffled_indices)
                 for i, (sample, label) in enumerate(previous_train_dataset):
                     if track[label] == 6:
                         continue
