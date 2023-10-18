@@ -9,7 +9,7 @@ from src.dataloader.dataset import get_loader
 from src.utils.rand_augment import RandAugment
 from src.models.classifier.baseline import Baseline
 from src.models.classifier.pretrained_clip import CLIPClassifier
-from src.utils.losses import LabelSmoothingCrossEntropy
+from src.utils.losses import LabelSmoothingCrossEntropy, FocalLossWithSmoothing
 import torchvision.transforms as transforms
 from tqdm import tqdm 
 import numpy as np
@@ -20,7 +20,7 @@ class Trainer:
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.transform = transforms.Compose([
             transforms.Resize((224, 224)),
-            RandAugment(n=3, m=5),
+            # RandAugment(n=3, m=5),
             transforms.RandomVerticalFlip(),  
             transforms.RandomHorizontalFlip(),  
             transforms.RandomRotation(30),
@@ -30,11 +30,11 @@ class Trainer:
             ])
         self.models = {}
 
-    def train_one_phase(self, phase, max_epochs, lr=0.0001):
+    def train_one_phase(self, phase, max_epochs, lr=0.00005):
         best_train_accuracy, best_val_accuracy = 0.0, 0.0
         best_loss = np.inf
         model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
-        criterion = LabelSmoothingCrossEntropy()
+        criterion = FocalLossWithSmoothing()
         optimizer = optim.AdamW(model.parameters(), lr=lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=3, verbose=True)
 
