@@ -7,8 +7,9 @@ import sys
 sys.path.append(".")
 from src.dataloader.dataset import get_loader
 from src.utils.rand_augment import RandAugment
-from src.models.classifier.baseline import Baseline
+# from src.models.classifier.baseline import Baseline
 from src.models.classifier.pretrained_clip import CLIPClassifier
+from src.models.classifier.mlpmixer import Baseline
 from src.utils.losses import LabelSmoothingCrossEntropy, FocalLossWithSmoothing
 import torchvision.transforms as transforms
 from tqdm import tqdm 
@@ -34,7 +35,7 @@ class Trainer:
         best_train_accuracy, best_val_accuracy = 0.0, 0.0
         best_loss = np.inf
         model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
-        criterion = FocalLossWithSmoothing()
+        criterion = FocalLossWithSmoothing(num_classes=phase*10)
         optimizer = optim.AdamW(model.parameters(), lr=lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=3, verbose=True)
 
