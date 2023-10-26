@@ -1,6 +1,7 @@
 # Custom 
 data/*/Train/*/*/*.jpg
 data/*/Val/*.jpg
+data/*/Test/*.jpg
 data/*/*.zip
 checkpoints/*.pth
 outputs/*.zip

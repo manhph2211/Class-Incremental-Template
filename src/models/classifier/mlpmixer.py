@@ -47,24 +47,25 @@ class Baseline(nn.Module):
         except:
             pass
 
-        # Freeze the weights of the feature extractor
-        for param in self.extractor.parameters():
-            param.requires_grad = False
+        # for param in self.extractor.parameters():
+        #     param.requires_grad = False
 
-        # Define MLP-Mixer structure
         mlp_dim = 512
-        num_blocks = 4  # You can adjust the number of blocks
+        num_blocks = 4  
         self.mixer = MLPMixer(num_blocks, in_channels=1280, mlp_dim=mlp_dim)
 
         self.classifier = nn.Sequential(
-            nn.Dropout(0.2),
-            nn.Linear(1280, num_classes),
+            nn.Dropout(0.05),
+            nn.Linear(1280, 512),
+            MemoryEfficientSwish(),
+            nn.Dropout(0.05),
+            nn.Linear(512, num_classes),
             MemoryEfficientSwish()
         ).to(device)
 
     def forward(self, x):
         x = self.extractor(x)
-        x = self.mixer(x)  # Pass through MLP-Mixer
+        x = self.mixer(x)  
         x = self.classifier(x)
         return x
 

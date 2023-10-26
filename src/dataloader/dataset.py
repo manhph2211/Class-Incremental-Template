@@ -48,7 +48,7 @@ class DataHandler:
                 random.shuffle(shuffled_indices)
                 previous_train_dataset = torch.utils.data.Subset(previous_train_dataset, shuffled_indices)
                 for i, (sample, label) in enumerate(previous_train_dataset):
-                    if track[label] == 6:
+                    if track[label] == 20:
                         continue
                     additional_samples.append((sample, label))
                     track[label]+=1

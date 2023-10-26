@@ -31,11 +31,11 @@ class Trainer:
             ])
         self.models = {}
 
-    def train_one_phase(self, phase, max_epochs, lr=0.00005):
+    def train_one_phase(self, phase, max_epochs, lr=0.0001):
         best_train_accuracy, best_val_accuracy = 0.0, 0.0
         best_loss = np.inf
         model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
-        criterion = FocalLossWithSmoothing(num_classes=phase*10)
+        criterion = LabelSmoothingCrossEntropy()
         optimizer = optim.AdamW(model.parameters(), lr=lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=3, verbose=True)
 
@@ -90,9 +90,9 @@ class Trainer:
         return best_train_accuracy, best_val_accuracy
     
     def train(self):
-        for phase in range(1,11):
+        for phase in range(10,11):
             print(f"************** Start traning phase {phase} **************")
-            train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=100)
+            train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=75)
             print(f"************** Phase {phase} - Best Train Acc: {train_accuracy:.4f} - Best Val Acc: {val_accuracy:.4f} **************")
 
 
