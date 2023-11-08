@@ -3,7 +3,7 @@ Class-Incremental
 
 # Introduction
 
-This project aims to handle the image classification using Class-Incremental Method, FastSAM, and CLIP model :smile: 
+This template aims to create a baseline for handling the image classification using Class-Incremental Method. It also depends on the requirements and datasets to whether use or not use FastSAM or CLIP models to further improve the performance. 
 
 # Dataset
 
