@@ -90,9 +90,9 @@ class Trainer:
         return best_train_accuracy, best_val_accuracy
     
     def train(self):
-        for phase in range(10,11):
+        for phase in range(1,11):
             print(f"************** Start traning phase {phase} **************")
-            train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=75)
+            train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=100)
             print(f"************** Phase {phase} - Best Train Acc: {train_accuracy:.4f} - Best Val Acc: {val_accuracy:.4f} **************")
 
 

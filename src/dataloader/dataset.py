@@ -15,7 +15,7 @@ from src.dataloader.custom_incremental import CustomTestDataset, CustomTrainData
 
 
 class DataHandler:
-    def __init__(self, root='data/raw/Train', ratio=0.2, transform=None):
+    def __init__(self, root='data/raw/Train', ratio=0.1, transform=None):
         self.root = root
         self.transform = transform
         self.ratio = ratio
@@ -48,7 +48,7 @@ class DataHandler:
                 random.shuffle(shuffled_indices)
                 previous_train_dataset = torch.utils.data.Subset(previous_train_dataset, shuffled_indices)
                 for i, (sample, label) in enumerate(previous_train_dataset):
-                    if track[label] == 20:
+                    if track[label] == 5:
                         continue
                     additional_samples.append((sample, label))
                     track[label]+=1

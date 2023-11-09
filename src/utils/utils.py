@@ -4,6 +4,17 @@ import gdown
 import os
 import zipfile
 import json
+import shutil
+from tqdm import tqdm
+import glob
+
+
+def move_file_to_folder(source_file_path, destination_folder_path):
+    try:
+        shutil.move(source_file_path, destination_folder_path)
+        print(f"Moved {source_file_path} to {destination_folder_path}")
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 def download_files_from_google_drive(url, name='train.zip', destination_folder='data/raw'):
@@ -61,7 +72,24 @@ def analyze_json(json_file_path="outputs/validation.json"):
     plt.xticks(rotation=45)  
     plt.show()
 
+
+def number_to_padded_string(number):
+    if 0 <= number < 100:
+        return str(number).zfill(3)  
+    else:
+        return "Number out of range"
+        
+
+def merge_semi_data(json_file_path="outputs/validation.json"):
+    data = load_json_as_dict(json_file_path)
+    for key, value in tqdm(data.items()): 
+        destination_folder_path = os.path.join("data/raw/Train", f"phase_{1 + value // 10}", f"{number_to_padded_string(value)}")
+        current_img_nums = len(glob.glob(os.path.join(destination_folder_path, "*.jpg")))
+        move_file_to_folder(os.path.join("data/raw/Val", key), os.path.join(destination_folder_path, f"{current_img_nums+1}.jpg"))
+
+
 if __name__ == "__main__":
     # download_files_from_google_drive(url="https://drive.google.com/file/d/12gRUJ5nT1RkAxZcRMf2pmnR3yn7kdmAH/view?usp=sharing", name="val.zip")
     # download_files_from_google_drive(url="https://drive.google.com/file/d/1XC2tWUdWN_rUKRwuiLuXNYYl1mTHLpxt/view?usp=sharing", name="train.zip")
-    analyze_json()
+    # analyze_json()
+    merge_semi_data()

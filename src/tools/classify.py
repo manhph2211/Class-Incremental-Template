@@ -15,7 +15,7 @@ from torch.nn.functional import softmax
 
 
 class Inference:
-    def __init__(self, path_to_folder, threshold=0.4):
+    def __init__(self, path_to_folder, threshold=0.6):
         self.path_to_folder = path_to_folder
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.models = self.load_models()
@@ -80,5 +80,5 @@ class Inference:
 
 
 if __name__ == "__main__":
-    inference = Inference(path_to_folder="data/raw/Val")
+    inference = Inference(path_to_folder="data/raw/Test")
     inference.submit()
