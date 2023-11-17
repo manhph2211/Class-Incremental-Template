@@ -31,10 +31,10 @@ class Trainer:
             ])
         self.models = {}
 
-    def train_one_phase(self, phase, max_epochs, lr=0.0001):
+    def train_one_phase(self, phase, max_epochs, lr=0.0001, model_name='b0'):
         best_train_accuracy, best_val_accuracy = 0.0, 0.0
         best_loss = np.inf
-        model = Baseline(pretrained_checkpoint=f"checkpoints/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
+        model = Baseline(pretrained_checkpoint=f"checkpoints/{model_name}/phase_{phase-1}_model.pth", num_classes=phase*10, device=self.device)
         criterion = LabelSmoothingCrossEntropy()
         optimizer = optim.AdamW(model.parameters(), lr=lr)
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, factor=0.8, patience=3, verbose=True)
@@ -83,19 +83,19 @@ class Trainer:
 
             if val_running_loss < best_loss:
                 best_loss = val_running_loss
-                torch.save(model.state_dict(), f"checkpoints/phase_{phase}_model.pth")
+                torch.save(model.state_dict(), f"checkpoints/{model_name}/phase_{phase}_model.pth")
 
         self.models[phase] = model
 
         return best_train_accuracy, best_val_accuracy
     
-    def train(self):
+    def train(self, model_name):
         for phase in range(1,11):
             print(f"************** Start traning phase {phase} **************")
-            train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=100)
+            train_accuracy, val_accuracy = self.train_one_phase(phase, max_epochs=100, model_name=model_name)
             print(f"************** Phase {phase} - Best Train Acc: {train_accuracy:.4f} - Best Val Acc: {val_accuracy:.4f} **************")
 
 
 if __name__ == "__main__":
     trainer = Trainer()
-    trainer.train()
+    trainer.train(model_name='b0')

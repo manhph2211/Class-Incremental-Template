@@ -12,13 +12,13 @@ from src.models.classifier.mlpmixer import Baseline
 from src.models.classifier.pretrained_clip import CLIPClassifier
 from src.utils.utils import save_dict_as_json, load_json_as_dict
 from torch.nn.functional import softmax
+import numpy as np 
 
 
 class Inference:
     def __init__(self, path_to_folder, threshold=0.6):
         self.path_to_folder = path_to_folder
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.models = self.load_models()
         self.data_transforms = transforms.Compose([
             transforms.Resize((224, 224)),
             transforms.ToTensor(),
@@ -28,17 +28,18 @@ class Inference:
         self.threshold = threshold
         self.good_samples = dict()
 
-    def load_models(self):
+    def load_models(self, model_name='b0'):
         models = []
         for phase in range(1, 11):
             model = Baseline(pretrained_checkpoint=None, num_classes=10*phase, device=self.device)
-            model_path = f"checkpoints/phase_{phase}_model.pth"  
+            model_path = f"checkpoints/{model_name}/phase_{phase}_model.pth"  
             model.load_state_dict(torch.load(model_path, map_location=self.device))
             model.eval()
             models.append(model)
         return models
 
-    def infer(self):
+    def infer(self, model_name='b0'):
+        self.models = self.load_models(model_name)
         results = []
         image_folder = CustomTestDataset(path_to_folder=self.path_to_folder, transform=self.data_transforms)
         data_loader = DataLoader(image_folder, batch_size=1, shuffle=False)
@@ -67,7 +68,7 @@ class Inference:
         return results
 
     def submit(self):
-        results = self.infer()
+        results = self.infer('b0')
         zip_filename = "outputs/results.zip"
 
         with zipfile.ZipFile(zip_filename, "w") as zipf:
@@ -78,7 +79,29 @@ class Inference:
                         txtf.write(f"{image_name} {prediction}\n")
                 zipf.write(txt_filename)
 
+    def ensemble_submit(self):
+        ensemble_results = {}
+
+        for phase in range(1, 11):
+            phase_predictions = []
+
+            for model_name in self.model_names:
+                results = self.infer(model_name)
+                phase_predictions.append(results[model_name][0])  
+
+            final_prediction = torch.tensor(phase_predictions).mean(dim=0).argmax().item()
+
+            ensemble_results[phase] = (phase, final_prediction)
+
+        zip_filename = "outputs/ensemble_results.zip"
+        with zipfile.ZipFile(zip_filename, "w") as zipf:
+            txt_filename = "outputs/ensemble_result.txt"
+            with open(txt_filename, "w") as txtf:
+                for _, prediction in ensemble_results.values():
+                    txtf.write(f"{phase} {prediction}\n")
+            zipf.write(txt_filename)
+
 
 if __name__ == "__main__":
     inference = Inference(path_to_folder="data/raw/Test")
-    inference.submit()
+    inference.ensemble_submit()

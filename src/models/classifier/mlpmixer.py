@@ -35,9 +35,9 @@ class MLPMixer(nn.Module):
 
 
 class Baseline(nn.Module):
-    def __init__(self, pretrained_checkpoint=None, num_classes=10, device='cuda'):
+    def __init__(self, pretrained_checkpoint=None, num_classes=10, device='cuda', model_name='b0'):
         super(Baseline, self).__init__()
-        self.extractor = EfficientNet.from_pretrained('efficientnet-b0').to(device)
+        self.extractor = EfficientNet.from_pretrained(f'efficientnet-{model_name}').to(device)
         self.extractor._fc = nn.Identity()
 
         try:
