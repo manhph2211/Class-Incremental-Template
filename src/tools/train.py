@@ -8,7 +8,6 @@ sys.path.append(".")
 from src.dataloader.dataset import get_loader
 from src.utils.rand_augment import RandAugment
 # from src.models.classifier.baseline import Baseline
-from src.models.classifier.pretrained_clip import CLIPClassifier
 from src.models.classifier.mlpmixer import Baseline
 from src.utils.losses import LabelSmoothingCrossEntropy, FocalLossWithSmoothing
 import torchvision.transforms as transforms

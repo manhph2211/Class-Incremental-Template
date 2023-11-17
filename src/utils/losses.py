@@ -27,7 +27,6 @@ class LabelSmoothingCrossEntropy(nn.Module):
         self.ε,self.reduction = ε,reduction
     
     def forward(self, output, target):
-        # number of classes
         c = output.size()[-1]
         log_preds = F.log_softmax(output, dim=-1)
         loss = reduce_loss(-log_preds.sum(dim=-1), self.reduction)
@@ -45,13 +44,6 @@ class FocalLossWithSmoothing(nn.Module):
             size_average: bool = True,
             ignore_index: int = None,
             alpha: float = None):
-        """
-        :param gamma:
-        :param lb_smooth:
-        :param ignore_index:
-        :param size_average:
-        :param alpha:
-        """
         super(FocalLossWithSmoothing, self).__init__()
         self._num_classes = num_classes
         self._gamma = gamma
@@ -70,11 +62,6 @@ class FocalLossWithSmoothing(nn.Module):
                 raise ValueError('Alpha must be 0 <= alpha <= 1')
 
     def forward(self, logits, label):
-        """
-        :param logits: (batch_size, class, height, width)
-        :param label:
-        :return:
-        """
         logits = logits.float()
         difficulty_level = self._estimate_difficulty_level(logits, label)
 
@@ -93,11 +80,6 @@ class FocalLossWithSmoothing(nn.Module):
         return loss.mean()
 
     def _estimate_difficulty_level(self, logits, label):
-        """
-        :param logits:
-        :param label:
-        :return:
-        """
         one_hot_key = torch.nn.functional.one_hot(label, num_classes=self._num_classes)
         if len(one_hot_key.shape) == 4:
             one_hot_key = one_hot_key.permute(0, 3, 1, 2)

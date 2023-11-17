@@ -9,7 +9,6 @@ import sys
 sys.path.append(".")
 from src.dataloader.dataset import CustomTestDataset
 from src.models.classifier.mlpmixer import Baseline
-from src.models.classifier.pretrained_clip import CLIPClassifier
 from src.utils.utils import save_dict_as_json, load_json_as_dict
 from torch.nn.functional import softmax
 import numpy as np 

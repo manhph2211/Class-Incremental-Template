@@ -1,9 +1,0 @@
-*.pyc
-*.pyo
-*.pyd
-.DS_Store
-.idea
-weights/*.pt
-build/
-*.egg-info/
-gradio_cached_examples
