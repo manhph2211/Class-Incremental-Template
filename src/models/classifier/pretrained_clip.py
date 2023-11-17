@@ -26,5 +26,5 @@ class CLIPClassifier(nn.Module):
 
 
 if __name__ == "__main__":
-    model = Baseline()
+    model = CLIPClassifier()
     print(model(torch.randn(1, 3, 224, 224).to('cuda')).shape)
