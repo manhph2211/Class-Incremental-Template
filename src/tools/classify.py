@@ -54,7 +54,7 @@ class Inference:
                     probabilities = softmax(output, dim=1) 
 
                     max_probability, predicted_class = probabilities.max(1)
-                    print(max_probability)
+                    # print(max_probability)
                     if max_probability.item() >= self.threshold:
                         if filename in self.good_samples:
                             if self.good_samples[filename[0]] < max_probability.item():
@@ -70,7 +70,6 @@ class Inference:
     def submit(self):
         results = self.infer('b0')
         zip_filename = "outputs/results.zip"
-
         with zipfile.ZipFile(zip_filename, "w") as zipf:
             for phase in results:
                 txt_filename = f"result_{phase}.txt"
@@ -80,25 +79,23 @@ class Inference:
                 zipf.write(txt_filename)
 
     def ensemble_submit(self):
-        ensemble_results = {}
+        self.model_names = ['b0', 'b1', 'b2']
+        zip_filename = "outputs/results.zip"
 
         for phase in range(1, 11):
             phase_predictions = []
 
             for model_name in self.model_names:
                 results = self.infer(model_name)
-                phase_predictions.append(results[model_name][0])  
+                phase_predictions.append(results[phase])
 
-            final_prediction = torch.tensor(phase_predictions).mean(dim=0).argmax().item()
+            phase_predictions = list(zip(*phase_predictions))
+            phase_predictions = [(image_name, Counter(predictions).most_common(1)[0][0]) for image_name, predictions in phase_predictions]
 
-            ensemble_results[phase] = (phase, final_prediction)
-
-        zip_filename = "outputs/ensemble_results.zip"
-        with zipfile.ZipFile(zip_filename, "w") as zipf:
-            txt_filename = "outputs/ensemble_result.txt"
+            txt_filename = f"result_{phase}.txt"
             with open(txt_filename, "w") as txtf:
-                for _, prediction in ensemble_results.values():
-                    txtf.write(f"{phase} {prediction}\n")
+                for image_name, prediction in phase_predictions:
+                    txtf.write(f"{image_name} {prediction}\n")
             zipf.write(txt_filename)
 
 

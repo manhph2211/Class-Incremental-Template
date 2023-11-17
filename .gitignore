@@ -4,6 +4,7 @@ data/*/Val/*.jpg
 data/*/Test/*.jpg
 data/*/*.zip
 checkpoints/*.pth
+checkpoints/*/*.pth
 outputs/*.zip
 *.sh
 *.out
